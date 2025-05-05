@@ -15,4 +15,4 @@ router = Router()
 # START_COMMAND
 @router.message(CommandStart(), StateFilter(default_state))
 async def start(message: Message):
-    await message.answer(text='Привет')
+    await message.answer(text='Привет.')
