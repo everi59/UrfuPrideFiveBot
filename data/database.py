@@ -1,5 +1,5 @@
 import sqlite3
-from UrfuPrideFiveBot.config.config import Config, load_config
+from config.config import Config, load_config
 
 config: Config = load_config()
 conn = sqlite3.connect(config.database.name)
