@@ -1,0 +1,30 @@
+# Виртуальное окружение
+venv/
+__pycache__
+*.pyc
+
+# Файлы сред разработки
+.idea/
+.vscode/
+
+# Логи и базы данных
+*.log
+*.sqlite3
+db.sqlite3
+data/*.db
+
+# Переменные окружения
+.env
+
+# Зависимости
+*.egg-info/
+dist/
+build/
+
+# Тестирование
+coverage.xml
+nosetests.xml
+
+# OS metadata
+.DS_Store
+Thumbs.db

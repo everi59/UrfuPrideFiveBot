@@ -15,8 +15,6 @@ async def main():
     logger.info('Starting bot')
 
     config: Config = load_config()
-    # db = Database(config.database.name)
-    # db.create_table()
     bot = Bot(token=config.tg_bot.token,
               parse_mode='HTML')
     dp = Dispatcher()
