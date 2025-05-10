@@ -3,6 +3,8 @@ from sqlalchemy.orm import sessionmaker, relationship, declarative_base
 from sqlalchemy import create_engine
 from datetime import datetime
 
+from services.services import MENU_MAIN, MENU_EDIT, MENU_CREATE, MENU_VIEW
+
 # 1. Базовый класс
 Base = declarative_base()
 
@@ -65,6 +67,22 @@ class Database:
     def get_user(self, user_id: int):
         db = self.SessionLocal()
         return db.query(User).filter(User.user_id == user_id).first()
+
+    def get_user_menu_state(self, user_id: int) -> str:
+        db = self.SessionLocal()
+        user = db.query(User).filter(User.user_id == user_id).first()
+        if user:
+            return user.menu_state
+        return MENU_MAIN
+
+    def set_user_menu_state(self, user_id: int, state: str):
+        db = self.SessionLocal()
+        user = db.query(User).filter(User.user_id == user_id).first()
+        if user:
+            user.menu_state = state
+            db.commit()
+            db.refresh(user)
+        return user
 
     # Заметки
     def create_note(self, user_id: int, data_start: datetime, data_end: datetime, note_title: str, note_text: str):

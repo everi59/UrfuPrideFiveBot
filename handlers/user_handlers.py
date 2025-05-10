@@ -100,5 +100,10 @@ async def fill_deadline_end(message: Message,
         note_title=title
     )
 
-    await message.answer(f"✅ Дедлайн '{title}' создан на {parsed_date.strftime('%d.%m.%Y %H:%M')}")
+    await state.clear()
 
+    await message.answer(f"✅ Дедлайн '{title}' создан на {parsed_date.strftime('%d.%m.%Y %H:%M')}")
+    await message.answer(text='Привет! Я помогу тебе следить за дедлайнами и\nдомашними заданиями.\n'
+                              '<b>Выбери нужное действие</b>',
+                         reply_markup=create_inline_kb(width=1, dct={'add_new_note': 'Добавить новый дедлайн',
+                                                                     'my_notes': 'Просмотр дедлайнов'}))

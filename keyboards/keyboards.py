@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from typing import Any
 
 from aiogram.filters.callback_data import CallbackData
-from aiogram.types import (InlineKeyboardButton, InlineKeyboardMarkup)
-from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder, KeyboardButton
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder, KeyboardButton, InlineKeyboardMarkup
 from lexicon.lexicon import keyboard_lexicon
 
 
@@ -62,3 +62,24 @@ def create_keyboard(buttons: list,
         kb_builder.add(*buttons)
         kb_builder.adjust(*adjust)
     return kb_builder.as_markup(resize_keyboard=True, one_time_keyboard=one_time_keyboard)
+
+
+def get_pagination_keyboard(current_page, total_pages):
+    kb_builder = InlineKeyboardBuilder()
+
+    buttons = []
+
+    if current_page > 0:
+        buttons.append(InlineKeyboardButton(text="⬅️ Назад", callback_data=f"page_{current_page - 1}"))
+    else:
+        buttons.append(InlineKeyboardButton(text="⬅️ Назад", callback_data=f"nope"))
+
+    buttons.append(InlineKeyboardButton(text=f"{current_page + 1}/{total_pages}", callback_data="nope"))
+
+    if current_page < total_pages - 1:
+        buttons.append(InlineKeyboardButton(text="➡️ Вперед", callback_data=f"page_{current_page + 1}"))
+    else:
+        buttons.append(InlineKeyboardButton(text="➡️ Вперед", callback_data=f"nope"))
+
+    kb_builder.row(*buttons, width=3)
+    return kb_builder.as_markup()
