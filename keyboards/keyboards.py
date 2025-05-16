@@ -64,7 +64,9 @@ def create_keyboard(buttons: list,
     return kb_builder.as_markup(resize_keyboard=True, one_time_keyboard=one_time_keyboard)
 
 
-def get_pagination_keyboard(current_page, total_pages):
+def get_pagination_keyboard(current_page, total_pages, notes):
+    notes = notes[current_page * 4:min(len(notes), current_page * 4 + 4)]
+
     kb_builder = InlineKeyboardBuilder()
 
     buttons = []
@@ -82,4 +84,57 @@ def get_pagination_keyboard(current_page, total_pages):
         buttons.append(InlineKeyboardButton(text="➡️ Вперед", callback_data=f"nope"))
 
     kb_builder.row(*buttons, width=3)
+
+    for note in notes:
+        deadline_str = note.data_end.strftime("%d.%m.%Y %H:%M")
+        title = note.note_title
+        kb_builder.row(
+            InlineKeyboardButton(
+                text=f"📝 {title} ({deadline_str})",
+                callback_data=f"note_{note.note_id}"
+            )
+        )
+
+    kb_builder.row(
+        InlineKeyboardButton(text="🔙 Выход",
+                             callback_data="exit")
+    )
+    return kb_builder.as_markup()
+
+
+def get_note_keyboard(note_id, is_done_kb):
+    kb_builder = InlineKeyboardBuilder()
+
+    buttons = list()
+
+    done_text = "❌ Дедлайн не выполнен" if is_done_kb else "✅ Дедлайн выполнен"
+
+    callback = "uncomplete" if is_done_kb else "complete"
+
+    buttons.append(InlineKeyboardButton(text=done_text, callback_data=f"{callback}_{note_id}"))
+
+    buttons.append(InlineKeyboardButton(text="🔧 Редактировать дедлайн", callback_data=f"edit_{note_id}"))
+
+    buttons.append(InlineKeyboardButton(text="📅 Изменить дату дедлайна", callback_data=f"extend_{note_id}"))
+
+    buttons.append(InlineKeyboardButton(text="🗑️ Удалить дедлайн", callback_data=f"delete_{note_id}"))
+
+    buttons.append(InlineKeyboardButton(text="🔙 Назад", callback_data=f"back_{note_id}"))
+
+    kb_builder.row(*buttons, width=1)
+
+    return kb_builder.as_markup()
+
+
+def get_notification_keyboard(note_id, time_left):
+    kb_builder = InlineKeyboardBuilder()
+
+    buttons = list()
+
+    buttons.append(InlineKeyboardButton(text="✅ Я выполнил", callback_data=f"done_{note_id}_{time_left}"))
+
+    buttons.append(InlineKeyboardButton(text="⏳ Продлить", callback_data=f"extend_{note_id}"))
+
+    kb_builder.row(*buttons, width=1)
+
     return kb_builder.as_markup()

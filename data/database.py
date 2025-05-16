@@ -1,22 +1,21 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship, declarative_base
-from sqlalchemy import create_engine
-from datetime import datetime
+from sqlalchemy import create_engine, and_
+from datetime import datetime, timedelta
 
-from services.services import MENU_MAIN, MENU_EDIT, MENU_CREATE, MENU_VIEW
+MENU_MAIN = "main"
+MENU_CREATE = "create"
+MENU_VIEW = "view"
+MENU_EDIT = "edit"
 
-# 1. Базовый класс
 Base = declarative_base()
 
-# 2. Создание движка (SQLite)
-DATABASE_URL = "sqlite:///./bot.db"  # Файл bot.db будет создан в папке проекта
+DATABASE_URL = "sqlite:///./bot.db"
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 
-# 3. Создание сессии
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-# 4. Модели таблиц
 class User(Base):
     __tablename__ = "users"
 
@@ -34,16 +33,15 @@ class Note(Base):
     data_end = Column(DateTime, nullable=False)
     note_title = Column(String, nullable=False)
     note_text = Column(String, nullable=True)  # Может быть пустым
-    is_available = Column(Boolean, default=True)  # Актуально ли напоминание
+    is_completed = Column(Boolean, default=False)  # Сделан ли дедлайн
 
     user = relationship("User", back_populates="notes")
 
 
-# 5. Создание таблиц в БД (если их нет)
 Base.metadata.create_all(bind=engine)
 
 
-# 6. Класс для работы с БД
+# Класс для работы с БД
 class Database:
     def __init__(self):
         self.SessionLocal = SessionLocal
@@ -150,3 +148,19 @@ class Database:
             db.commit()
             return True
         return False
+
+    def mark_note_as_completed(self, note_id: int):
+        db = self.SessionLocal()
+        note = db.query(Note).filter(Note.note_id == note_id).first()
+        if note:
+            note.is_completed = True
+            db.commit()
+            db.refresh(note)
+
+    def mark_note_as_uncompleted(self, note_id: int):
+        db = self.SessionLocal()
+        note = db.query(Note).filter(Note.note_id == note_id).first()
+        if note:
+            note.is_completed = False
+            db.commit()
+            db.refresh(note)

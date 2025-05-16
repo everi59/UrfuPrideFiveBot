@@ -1,11 +1,18 @@
 import asyncio
 import logging
 
-from aiogram import Bot, Dispatcher
-from config.config import load_config, Config
+from aiogram import Dispatcher
 from handlers import user_handlers, callback_handlers
+from data.database import Database
+from notification.notification import scheduler
+from bot_instance import bot
 
 logger = logging.getLogger(__name__)
+db_manager = Database()
+
+
+async def on_startup():
+    scheduler.start()
 
 
 async def main():
@@ -14,14 +21,12 @@ async def main():
                                '[%(asctime)s] - %(name)s - %(message)s')
     logger.info('Starting bot')
 
-    config: Config = load_config()
-    bot = Bot(token=config.tg_bot.token,
-              parse_mode='HTML')
     dp = Dispatcher()
 
     dp.include_router(user_handlers.router)
     dp.include_router(callback_handlers.router)
 
+    await on_startup()
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
