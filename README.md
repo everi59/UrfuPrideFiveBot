@@ -98,5 +98,4 @@ python main.py
 
 ## 📬 Авторы
 
-👤 Команда студентов ИРИТ-РТФ "Pride Five" 
-https://project.ai-info.ru/teams/pride-five
+👤 Команда студентов ИРИТ-РТФ ["Pride Five"](https://project.ai-info.ru/teams/pride-five)
