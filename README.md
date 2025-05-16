@@ -25,11 +25,11 @@
 
 ## ⚙️ Технологии и инструменты
 
-- **Python 3.10+**
-- **aiogram 3.x** — фреймворк для создания Telegram-ботов
-- **SQLAlchemy** — ORM для работы с базой данных
-- **SQLite** — хранение данных
-- **dateparser** — распознавание дат из текста
+- [**Python 3.13**](https://docs.python.org/3.13/)
+- [**aiogram 3.20.0**](https://docs.aiogram.dev/en/dev-3.x/) — фреймворк для создания Telegram-ботов
+- [**SQLAlchemy**](https://docs.sqlalchemy.org/en/20/) — ORM для работы с базой данных
+- [**SQLite**](https://www.sqlite.org/docs.html) — хранение данных
+- [**dateparser 1.2.1**](https://dateparser.readthedocs.io/en/latest/) — распознавание дат из текста
 - **Inline-кнопки и FSM (машина состояний)** — для пошагового ввода и меню
 
 ---
