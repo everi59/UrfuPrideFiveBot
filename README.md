@@ -30,6 +30,7 @@
 - [**SQLAlchemy**](https://docs.sqlalchemy.org/en/20/) — ORM для работы с базой данных
 - [**SQLite**](https://www.sqlite.org/docs.html) — хранение данных
 - [**dateparser 1.2.1**](https://dateparser.readthedocs.io/en/latest/) — распознавание дат из текста
+- [**APSheduler**](https://apscheduler.readthedocs.io/en/3.x/) - уведомление о дедлайнах
 - **Inline-кнопки и FSM (машина состояний)** — для пошагового ввода и меню
 
 ---
