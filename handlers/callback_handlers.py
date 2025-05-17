@@ -289,7 +289,7 @@ async def complete(callback: CallbackQuery):
 
     note_text = get_note_text(note)
 
-    reply_markup = get_note_keyboard(note_id, is_done_kb=True)
+    reply_markup = get_note_keyboard(note_id, is_done_kb=note.is_completed)
 
     await callback.message.edit_text(text=note_text, reply_markup=reply_markup)
 
@@ -316,6 +316,6 @@ async def uncomplete(callback: CallbackQuery):
 
     note_text = get_note_text(note)
 
-    reply_markup = get_note_keyboard(note_id, is_done_kb=False)
+    reply_markup = get_note_keyboard(note_id, is_done_kb=note.is_completed)
 
     await callback.message.edit_text(text=note_text, reply_markup=reply_markup)

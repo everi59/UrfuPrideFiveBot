@@ -156,7 +156,7 @@ async def edit_text(message: Message,
 
     note_text = get_note_text(note)
 
-    reply_markup = get_note_keyboard(data['note_id'])
+    reply_markup = get_note_keyboard(data['note_id'], is_done_kb=note.is_completed)
 
     await state.clear()
 
@@ -184,7 +184,7 @@ async def extend_deadline(message: Message,
 
     note_text = get_note_text(note)
 
-    reply_markup = get_note_keyboard(data['note_id'])
+    reply_markup = get_note_keyboard(data['note_id'], is_done_kb=note.is_completed)
 
     schedule_notification(note_id=note.note_id, deadline_end=parsed_date)
 
